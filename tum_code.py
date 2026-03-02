@@ -9,7 +9,7 @@ import cv2
 # ===============================
 @st.cache_resource
 def load_model():
-    model_path = "https://raw.githubusercontent.com/dclaro/imagedetection/main/yolo26n.pt"
+    model_path = "https://raw.githubusercontent.com/LarrissaSilva/imagedetection/main/yolo26n.pt"
     return YOLO(model_path)
 
 model = load_model()
@@ -73,3 +73,4 @@ if uploaded_file is not None:
                         st.write(f"Coordinates: {box.xywh}")
                 else:
                     st.write("No objects detected.")
+
