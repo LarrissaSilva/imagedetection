@@ -54,7 +54,8 @@ if source_img:
 
         results = model.predict(
             image_cv,
-            conf=0.5,
+            classes=[63],
+            conf=0.7,
             iou=0.5
         )
 
@@ -77,3 +78,4 @@ if source_img:
 
 else:
     st.warning("Please upload an image to proceed.")
+
