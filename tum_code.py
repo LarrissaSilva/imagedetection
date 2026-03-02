@@ -9,7 +9,7 @@ import cv2
 # ===============================
 model_path = "yolo26n.pt"
 
-st.title("Application to identify problems on building roofs")
+st.title("Application for identifying notebooks, laptops and similar devices.")
 
 # ===============================
 # Sidebar
@@ -78,5 +78,6 @@ if source_img:
 
 else:
     st.warning("Please upload an image to proceed.")
+
 
 
