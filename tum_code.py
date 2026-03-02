@@ -1,76 +1,38 @@
 import streamlit as st
 from PIL import Image
-from ultralytics import YOLO
 import numpy as np
-import cv2
 
-# ===============================
-# Load model (cached)
-# ===============================
+st.title("Automatic Image Detection")
+
 @st.cache_resource
 def load_model():
-    model_path = "https://raw.githubusercontent.com/LarrissaSilva/imagedetection/main/yolo26n.pt"
-    return YOLO(model_path)
+    from ultralytics import YOLO
+    return YOLO(
+        "https://raw.githubusercontent.com/LarrissaSilva/imagedetection/main/yolo26n.pt"
+    )
 
 model = load_model()
 
-# ===============================
-# Interface
-# ===============================
-st.title("Automatic Image Detection")
-
-st.markdown("""
-### Application Description
-This application detects tumors in brain MRI images using YOLO.
-Upload an image and run detection.
-""")
-
 uploaded_file = st.file_uploader(
-    "Choose an image...",
-    type=["jpg", "jpeg", "png"]
+    "Upload image",
+    type=["jpg", "png", "jpeg"]
 )
 
-# ===============================
-# Only continue if image exists
-# ===============================
-if uploaded_file is not None:
+if uploaded_file:
 
-    uploaded_image = Image.open(uploaded_file)
+    img = Image.open(uploaded_file)
+    st.image(img)
 
-    col1, col2 = st.columns(2)
+    if st.button("Detect"):
 
-    with col1:
-        st.image(
-            uploaded_image,
-            caption="Uploaded Image",
-            use_container_width=True
+        import cv2
+
+        img_cv = cv2.cvtColor(
+            np.array(img),
+            cv2.COLOR_RGB2BGR
         )
 
-    if st.sidebar.button("Detect Objects"):
+        results = model.predict(img_cv)
 
-        image_cv = np.array(uploaded_image)
-        image_cv = cv2.cvtColor(image_cv, cv2.COLOR_RGB2BGR)
-
-        results = model.predict(
-            image_cv,
-            conf=0.5,
-            iou=0.5
-        )
-
-        boxes = results[0].boxes
-        res_plotted = results[0].plot()[:, :, ::-1]
-
-        with col2:
-            st.image(
-                res_plotted,
-                caption="Detected Image",
-                use_container_width=True
-            )
-
-            with st.expander("Detection Results"):
-                if boxes is not None:
-                    for box in boxes:
-                        st.write(f"Coordinates: {box.xywh}")
-                else:
-                    st.write("No objects detected.")
-
+        plotted = results[0].plot()[:, :, ::-1]
+        st.image(plotted)
