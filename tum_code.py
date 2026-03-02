@@ -7,7 +7,7 @@ import cv2
 # ===============================
 # Model path
 # ===============================
-model_path = "https://github.com/LarrissaSilva/imagedetection/blob/main/yolo26n.pt"
+model_path = "yolo26n.pt"
 
 st.title("Application to identify problems on building roofs")
 
@@ -78,4 +78,5 @@ if source_img:
 
 else:
     st.warning("Please upload an image to proceed.")
+
 
