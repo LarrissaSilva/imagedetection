@@ -4,16 +4,25 @@ from ultralytics import YOLO
 import numpy as np
 import cv2
 
-# ===============================
 # Model path
-# ===============================
 model_path = "yolo26n.pt"
 
-st.title("Application for identifying notebooks, laptops and similar devices.")
+#Logo
+logo_path = "logo formas.jpeg"
+# Header (logo centralizada)
+h1, h2, h3 = st.columns([1, 2, 1])
+with h2:
+    try:
+        logo = Image.open(logo_path)
+        st.image(logo, use_container_width=True)  # redimensiona proporcionalmente
+    except Exception as ex:
+        st.warning(f"Could not load logo from '{logo_path}'.")
+        st.caption(str(ex))
 
-# ===============================
+st.title("Application for identifying notebooks, laptops and similar devices.")
+st.markdown("---")
+
 # Sidebar
-# ===============================
 with st.sidebar:
     st.header("Image")
     source_img = st.file_uploader(
@@ -21,14 +30,11 @@ with st.sidebar:
         type=("jpg", "jpeg", "png", "bmp", "webp")
     )
 
-# ===============================
 # Layout
-# ===============================
 col1, col2 = st.columns(2)
 
-# ===============================
+
 # Main logic
-# ===============================
 if source_img:
 
     uploaded_image = Image.open(source_img)
@@ -78,6 +84,7 @@ if source_img:
 
 else:
     st.warning("Please upload an image to proceed.")
+
 
 
 
